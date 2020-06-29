@@ -182,11 +182,6 @@ def main():
     if args.sample_ctx < 0:
       args.sample_ctx = hparams.n_ctx
 
-    if args.model_name == '345M':
-        args.memory_saving_gradients = True
-        if args.optimizer == 'adam':
-            args.only_train_transformer_layers = True
-
     config = tf.ConfigProto()
     if args.allow_growth:
         config.gpu_options.allow_growth = True
@@ -399,6 +394,7 @@ def main():
                     text = '======== SAMPLE {} ========\n{}\n'.format(
                         index + 1, text)
                     print(text)
+                    tf.summary.text(f"text-{i}", text)
                     all_text.append(text)
                     index += 1
             maketree(os.path.join(SAMPLE_DIR, args.run_name))
